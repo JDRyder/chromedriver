@@ -13,12 +13,24 @@ repositories {
 
 ext{
     selenium = [version: '3.141.59']
+
+    //testing
+    cucumber = [version: '6.10.4']
+    junit = [version: '5.3.1']
 }
 
 dependencies {
-    compile "org.seleniumhq.selenium:selenium-java:${selenium.version}"
+    compile "org.seleniumhq.selenium:selenium-java:${project.selenium.version}"
 
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testImplementation "io.cucumber:cucumber-java:${project.cucumber.version}"
+    testImplementation "io.cucumber:cucumber-junit:${project.cucumber.version}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${project.junit.version}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${project.junit.version}"
+
+}
+
+test {
+    useJUnitPlatform()
 }
 
 task copyRuntimeLibs(type: Copy){
