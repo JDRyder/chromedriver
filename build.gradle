@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+}
+
+group 'com.ryder'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+ext{
+    selenium = [version: '3.141.59']
+}
+
+dependencies {
+    compile "org.seleniumhq.selenium:selenium-java:${selenium.version}"
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+task copyRuntimeLibs(type: Copy){
+    into "$buildDir/libs/lib"
+    from configurations.compile
+}
+
+assemble.dependsOn copyRuntimeLibs
+
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.compile.collect {'lib/' + it.getName()}.join(' '),
+                'Main-Class': 'com.ryder.chromedriver.Main'
+        )
+    }
+}
