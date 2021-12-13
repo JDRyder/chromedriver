@@ -19,6 +19,6 @@ public class Driver {
         searchBox.submit();
         Thread.sleep(5000);
         chromeDriver.quit();
-    }
+    } 
 
 }

@@ -23,7 +23,7 @@ public class StepDefinitions {
             isFriday = false;
     }
 
-    @Then("I should be told {string}")
+    @Then("I should be told {string}") 
     public void i_should_be_told(String string) {
         System.out.println(string);
     }
@@ -35,6 +35,6 @@ public class StepDefinitions {
 
     @Given("today is Friday")
     public void today_is_friday() {
-        day = "Friday";
+        day = "Friday"; 
     }
 }
