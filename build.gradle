@@ -15,22 +15,40 @@ ext{
     selenium = [version: '3.141.59']
 
     //testing
-    cucumber = [version: '6.10.4']
+    gherkin = [version: '6.10.4']
     junit = [version: '5.3.1']
 }
 
 dependencies {
     compile "org.seleniumhq.selenium:selenium-java:${project.selenium.version}"
 
-    testImplementation "io.cucumber:cucumber-java:${project.cucumber.version}"
-    testImplementation "io.cucumber:cucumber-junit:${project.cucumber.version}"
+    testImplementation "io.cucumber:cucumber-java:${project.gherkin.version}"
+    testImplementation "io.cucumber:cucumber-junit:${project.gherkin.version}"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${project.junit.version}"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${project.junit.version}"
 
 }
 
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation
+    }
+}
+
+task cucumber() {
+    dependsOn assemble, testClasses
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cu cumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = ['--plugin', 'pretty', '--glue', 'com.ryder.cucumber', 'src/test/resources']
+        }
+    }
+}
+
 test {
     useJUnitPlatform()
+    dependsOn cucumber
 }
 
 task copyRuntimeLibs(type: Copy){
