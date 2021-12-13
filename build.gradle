@@ -12,11 +12,11 @@ repositories {
 }
 
 ext{
-    selenium = [version: '3.141.59']
+    selenium = [version: project.seleniumVersion]
 
     //testing
-    gherkin = [version: '6.10.4']
-    junit = [version: '5.3.1']
+    gherkin = [version: project.gherkinVersion]
+    junit = [version: project.junitVersion]
 }
 
 dependencies {
@@ -37,10 +37,11 @@ configurations {
 
 task cucumber() {
     dependsOn assemble, testClasses
+
     doLast {
         javaexec {
             main = "io.cucumber.core.cli.Main"
-            classpath = configurations.cu cumberRuntime + sourceSets.main.output + sourceSets.test.output
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
             args = ['--plugin', 'pretty', '--glue', 'com.ryder.cucumber', 'src/test/resources']
         }
     }
